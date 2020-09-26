@@ -5,23 +5,22 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.oauth2.client.userinfo.CustomUserTypesOAuth2UserService;
 
 @RequiredArgsConstructor
-@EnableWebSecurity // Spring Security 설정들을 활성화 시켜줍니다.
+@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final CustomUserTypesOAuth2UserService customUserTypesOAuth2UserService;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
-                .headers().frameOptions().disable() // h2-console 화면을 사용하기 위해 해당 옵션들을 disable 합니다.
+                .headers().frameOptions().disable()
                 .and()
                     .authorizeRequests()
-                    .antMatchers("/", "/css/**", "/images/**",
-                            "/js/**", "/h2-console/**").hasRole(Role.USER.name()) // 권한 관리 대상을 지정하는 옵션
+                    .antMatchers("/", "/css/**", "/images/**", "/js/**", "/h2-console/**", "/profile").permitAll()
+                    .antMatchers("/api/v1/**").hasRole(Role.USER.name())
                     .anyRequest().authenticated()
                 .and()
                     .logout()
@@ -29,6 +28,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .oauth2Login()
                         .userInfoEndpoint()
-                            .userService(customUserTypesOAuth2UserService);
+                        .userService(customOAuth2UserService);
     }
 }
