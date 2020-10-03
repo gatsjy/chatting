@@ -2,17 +2,17 @@ package com.juan.chatting.springboot.domain.user;
 
 
 import com.juan.chatting.springboot.domain.BaseTimeEntity;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Getter @Setter
-@NoArgsConstructor
 @Entity
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class User extends BaseTimeEntity {
 
     @Id
@@ -33,7 +33,7 @@ public class User extends BaseTimeEntity {
 
     private int age;
 
-    private String bobby;
+    private String hobby;
 
     private String bloodType;
 
@@ -43,12 +43,27 @@ public class User extends BaseTimeEntity {
 
     private String job;
 
+    @ToString.Exclude
+    private String phoneNumber;
+
+    @OneToOne(cascade = {CascadeType.ALL})
+    private Block block;
+
     @Builder
     public User(String name, String email, String picture, Role role){
         this.name = name;
         this.email = email;
         this.picture = picture;
         this.role = role;
+    }
+
+    public User(String name, String email, String picture, Role role, int age, String bloodType){
+        this.name = name;
+        this.email = email;
+        this.picture = picture;
+        this.role = role;
+        this.age = age;
+        this.bloodType = bloodType;
     }
 
     public User update(String name, String picture){
@@ -63,14 +78,30 @@ public class User extends BaseTimeEntity {
     }
 
     @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", picture='" + picture + '\'' +
-                ", role=" + role +
-                ", age=" + age +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return age == user.age &&
+                Objects.equals(id, user.id) &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(picture, user.picture) &&
+                role == user.role &&
+                Objects.equals(hobby, user.hobby) &&
+                Objects.equals(bloodType, user.bloodType) &&
+                Objects.equals(address, user.address) &&
+                Objects.equals(birthday, user.birthday) &&
+                Objects.equals(job, user.job) &&
+                Objects.equals(phoneNumber, user.phoneNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, email, picture, role, age, hobby, bloodType, address, birthday, job, phoneNumber);
+    }
+
+    public void update(Role role){
+        this.role = role;
     }
 }

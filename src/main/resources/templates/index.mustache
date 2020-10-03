@@ -13,6 +13,10 @@
                 <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
                 <a href="/oauth2/authorization/naver" class="btn btn-secondary active" role="button">Naver Login</a>
             {{/userName}}
+            {{#userRole}}
+                <span id="userRole">회원 등급: {{userRole}}</span>
+                <a href="/user/update/{{userId}}" class="btn btn-secondary active" role="button">회원 정보 수정</a>
+            {{/userRole}}
         </div>
     </div>
     <br>

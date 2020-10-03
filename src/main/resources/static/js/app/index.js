@@ -12,6 +12,10 @@ var main = {
         $('#btn-delete').on('click', function () {
             _this.delete();
         });
+
+        $('#btn-user-upgrade').on('click', function () {
+            _this.roleUpgrade();
+        })
     },
     save : function () {
         var data = {
@@ -68,8 +72,27 @@ var main = {
         }).fail(function (error) {
             alert(JSON.stringify(error));
         });
-    }
+    },
+    roleUpgrade : function () {
+        var id = $('#userId').val();
 
+        var data = {
+            role: $('#uerRole').val()
+        };
+
+        $.ajax({
+            type: 'PUT',
+            url: '/api/v1/userUpgrade/'+id,
+            dataType: 'json',
+            contentType:'application/json; charset=utf-8',
+            data: JSON.stringify(data)
+        }).done(function() {
+            alert('등업되었습니다.');
+            window.location.href = '/';
+        }).fail(function (error) {
+            alert(JSON.stringify(error));
+        });
+    }
 };
 
 main.init();
