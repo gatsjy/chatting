@@ -5,16 +5,18 @@ import com.juan.chatting.springboot.domain.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
-@Getter
+@Getter @Setter
 @NoArgsConstructor
 @Entity
 public class User extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
     @Column(nullable = false)
@@ -29,11 +31,23 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private Role role;
 
+    private int age;
+
+    private String bobby;
+
+    private String bloodType;
+
+    private String address;
+
+    private LocalDate birthday;
+
+    private String job;
+
     @Builder
     public User(String name, String email, String picture, Role role){
         this.name = name;
         this.email = email;
-        this.picture =picture;
+        this.picture = picture;
         this.role = role;
     }
 
@@ -46,5 +60,17 @@ public class User extends BaseTimeEntity {
 
     public String getRoleKey(){
         return this.role.getKey();
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", picture='" + picture + '\'' +
+                ", role=" + role +
+                ", age=" + age +
+                '}';
     }
 }
