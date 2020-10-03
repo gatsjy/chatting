@@ -1,0 +1,10 @@
+{{>layout/header}}
+
+<h1>채팅방 목록</h1>
+<ul>
+    {{#rooms}}
+        <li><a href="/chat/rooms/{{id}}">{{name}}</a></li>
+    {{/rooms}}
+</ul>
+
+{{>layout/footer}}
